@@ -16,7 +16,7 @@ limitations under the License.
 
 // Vendored from go4.org/net/throttle
 
-package zk
+package zookeeper
 
 import (
 	"fmt"
