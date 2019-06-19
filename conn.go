@@ -1044,6 +1044,14 @@ func (c *Conn) Set(path string, data []byte, version int32) (*Stat, error) {
 	return &res.Stat, err
 }
 
+func (c *Conn) CreatePersist(path string, data []byte) (string, error) {
+	return c.Create(path, data, FlagPersist, WorldACL(PermAll))
+}
+
+func (c *Conn) CreateEphemeral(path string, data []byte) (string, error) {
+	return c.Create(path, data, FlagEphemeral, WorldACL(PermAll))
+}
+
 func (c *Conn) Create(path string, data []byte, flags int32, acl []ACL) (string, error) {
 	isSequential := false
 	switch flags {
@@ -1088,7 +1096,7 @@ func (c *Conn) CreateProtectedEphemeralSequential(path string, data []byte, acl 
 
 	var newPath string
 	for i := 0; i < 3; i++ {
-		newPath, err = c.Create(protectedPath, data, FlagPersist|FlagEphemeral|FlagPersistSequence|FlagEphemeralSequence, acl)
+		newPath, err = c.Create(protectedPath, data, FlagEphemeralSequence, acl)
 		switch err {
 		case ErrSessionExpired:
 			// No need to search for the node since it can't exist. Just try again.
