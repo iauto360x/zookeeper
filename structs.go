@@ -2,6 +2,7 @@ package zookeeper
 
 import (
 	"encoding/binary"
+	"encoding/json"
 	"errors"
 	"log"
 	"reflect"
@@ -28,17 +29,22 @@ type ACL struct {
 }
 
 type Stat struct {
-	Czxid          int64 // The zxid of the change that caused this znode to be created.
-	Mzxid          int64 // The zxid of the change that last modified this znode.
-	Ctime          int64 // The time in milliseconds from epoch when this znode was created.
-	Mtime          int64 // The time in milliseconds from epoch when this znode was last modified.
-	Version        int32 // The number of changes to the data of this znode.
-	Cversion       int32 // The number of changes to the children of this znode.
-	Aversion       int32 // The number of changes to the ACL of this znode.
-	EphemeralOwner int64 // The session id of the owner of this znode if the znode is an ephemeral node. If it is not an ephemeral node, it will be zero.
-	DataLength     int32 // The length of the data field of this znode.
-	NumChildren    int32 // The number of children of this znode.
-	Pzxid          int64 // last modified children
+	Czxid          int64 `json:"czxid"`          // The zxid of the change that caused this znode to be created.
+	Mzxid          int64 `json:"mzxid"`          // The zxid of the change that last modified this znode.
+	Ctime          int64 `json:"ctime"`          // The time in milliseconds from epoch when this znode was created.
+	Mtime          int64 `json:"mtime"`          // The time in milliseconds from epoch when this znode was last modified.
+	Version        int32 `json:"version"`        // The number of changes to the data of this znode.
+	Cversion       int32 `json:"cversion"`       // The number of changes to the children of this znode.
+	Aversion       int32 `json:"aversion"`       // The number of changes to the ACL of this znode.
+	EphemeralOwner int64 `json:"ephemeralowner"` // The session id of the owner of this znode if the znode is an ephemeral node. If it is not an ephemeral node, it will be zero.
+	DataLength     int32 `json:"datalength"`     // The length of the data field of this znode.
+	NumChildren    int32 `json:"numchildren"`    // The number of children of this znode.
+	Pzxid          int64 `json:"pzxid"`          // last modified children
+}
+
+func (s *Stat) String() string {
+	bs, _ := json.Marshal(s)
+	return string(bs)
 }
 
 // ServerClient is the information for a single Zookeeper client and its session.
