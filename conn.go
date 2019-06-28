@@ -1058,7 +1058,7 @@ func (c *Conn) Create(path string, data []byte, flags int32, acl []ACL) (string,
 	case FlagPersist:
 		//
 	case FlagEphemeral:
-		//
+		//w
 	case FlagPersistSequence:
 		isSequential = true
 	case FlagEphemeralSequence:
